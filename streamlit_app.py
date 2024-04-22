@@ -12,7 +12,7 @@ def fetch_images(url):
 
 def app():
     st.title('WebP Checker Tool')
-    url = st.text_input('Inserisci l'URL della pagina web:')
+    url = st.text_input('Inserisci l'URL della pagina web: ')
     
     if url:
         webp_images = fetch_images(url)
