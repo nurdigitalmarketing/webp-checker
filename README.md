@@ -1,4 +1,4 @@
-## Web Image Format Checker
+## WebP Image Format Checker
 
 ## Description.
 The Web Image Format Checker app is a tool developed in Python and Streamlit that can analyze images on a web page to determine which image formats are being used. The app can identify images in WebP, JPEG (and JPG), and PNG formats, providing a detailed list of URLs for each format.
@@ -14,11 +14,5 @@ The Web Image Format Checker app is a tool developed in Python and Streamlit tha
 - Requests
 - BeautifulSoup
 
-## Installation.
-To run this application, you must have Python installed on your system. Here are the steps for installing and running it:
-
-1. Clone the repository:
- ```bash
- git clone https://github.com/tuo_username/web-image-format-checker.git
- cd web-image-format-checker
- ```
+## License
+This project is released under the MIT license.
