@@ -7,7 +7,7 @@ def fetch_images(url):
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
     images = soup.find_all('img')
-    return [img['src'] for img in images if 'src' in img.attrs]
+    return [img['src'] if img['src'].startswith('http') else url + img['src'] for img in images if 'src' in img.attrs]
 
 def check_webp(images):
     """ Check if the images are in WebP format """
