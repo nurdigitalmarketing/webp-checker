@@ -3,43 +3,51 @@ import requests
 from bs4 import BeautifulSoup
 
 def fetch_images(url):
-    """ Recupera le immagini dall'URL indicato e verifica i formati """
+    """ Recupera le immagini dall'URL indicato e verifica i formati, restituendo un dizionario delle categorie con le rispettive immagini. """
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
     images = soup.find_all('img')
     
-    webp_count = 0
-    jpeg_count = 0
-    png_count = 0
+    images_dict = {
+        'webp': [],
+        'jpeg': [],
+        'png': []
+    }
     
     for img in images:
         src = img.get('src', '')
         if src.endswith('.webp'):
-            webp_count += 1
+            images_dict['webp'].append(src)
         elif src.endswith('.jpeg') or src.endswith('.jpg'):
-            jpeg_count += 1
+            images_dict['jpeg'].append(src)
         elif src.endswith('.png'):
-            png_count += 1
+            images_dict['png'].append(src)
     
-    return webp_count, jpeg_count, png_count
+    return images_dict
 
 def app():
     st.title('Formato Immagini Web Checker')
     url = st.text_input('Inserisci la URL della pagina web:')
     
     if url:
-        webp_count, jpeg_count, png_count = fetch_images(url)
+        images_dict = fetch_images(url)
         
-        if webp_count > 0:
-            st.success(f"Questo sito utilizza immagini in WebP. Totale: {webp_count} immagini WebP trovate.")
+        if images_dict['webp']:
+            st.success(f"WebP Images: {len(images_dict['webp'])} trovate.")
+            for img in images_dict['webp']:
+                st.write(img)
         else:
             st.error("Non sono state trovate immagini WebP in questo sito.")
         
-        if jpeg_count > 0:
-            st.info(f"Ci sono {jpeg_count} immagini JPG/JPEG che non utilizzano WebP.")
+        if images_dict['jpeg']:
+            st.info(f"JPG/JPEG Images: {len(images_dict['jpeg'])} che non utilizzano WebP.")
+            for img in images_dict['jpeg']:
+                st.write(img)
         
-        if png_count > 0:
-            st.info(f"Ci sono {png_count} immagini PNG che non utilizzano WebP.")
+        if images_dict['png']:
+            st.info(f"PNG Images: {len(images_dict['png'])} che non utilizzano WebP.")
+            for img in images_dict['png']:
+                st.write(img)
 
 if __name__ == "__main__":
     app()
