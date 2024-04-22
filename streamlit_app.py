@@ -41,19 +41,19 @@ def app():
         images_dict = fetch_images(url)
         
         if images_dict['webp']:
-            st.success(f"*WebP*: {len(images_dict['webp'])} trovate.")
+            st.success(f"**WebP**: {len(images_dict['webp'])} trovate.")
             st.write("URL delle immagini WebP:")
             for img in images_dict['webp']:
                 st.markdown(f"[{img}]({img})")
         
         if images_dict['jpeg']:
-            st.info(f"*JPG/JPEG*: {len(images_dict['jpeg'])} che non utilizzano WebP.")
+            st.info(f"**JPG/JPEG**: {len(images_dict['jpeg'])} che non utilizzano WebP.")
             st.write("URL delle immagini JPG/JPEG:")
             for img in images_dict['jpeg']:
                 st.markdown(f"[{img}]({img})")
         
         if images_dict['png']:
-            st.info(f"*PNG*: {len(images_dict['png'])} che non utilizzano WebP.")
+            st.info(f"**PNG**: {len(images_dict['png'])} che non utilizzano WebP.")
             st.write("URL delle immagini PNG:")
             for img in images_dict['png']:
                 st.markdown(f"[{img}]({img})")
