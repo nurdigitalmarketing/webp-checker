@@ -26,7 +26,7 @@ def fetch_images(url):
     return images_dict
 
 def app():
-    st.title('WebP Image Format Checker')
+    st.title('Formato Immagini Web Checker')
     url = st.text_input('Inserisci la URL della pagina web:')
     
     if url:
@@ -34,6 +34,7 @@ def app():
         
         if images_dict['webp']:
             st.success(f"WebP Images: {len(images_dict['webp'])} trovate.")
+            st.write("URL delle immagini WebP:")
             for img in images_dict['webp']:
                 st.write(img)
         else:
@@ -41,11 +42,13 @@ def app():
         
         if images_dict['jpeg']:
             st.info(f"JPG/JPEG Images: {len(images_dict['jpeg'])} che non utilizzano WebP.")
+            st.write("URL delle immagini JPG/JPEG:")
             for img in images_dict['jpeg']:
                 st.write(img)
         
         if images_dict['png']:
             st.info(f"PNG Images: {len(images_dict['png'])} che non utilizzano WebP.")
+            st.write("URL delle immagini PNG:")
             for img in images_dict['png']:
                 st.write(img)
 
