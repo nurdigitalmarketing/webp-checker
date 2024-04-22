@@ -26,7 +26,7 @@ def fetch_images(url):
     return images_dict
 
 def app():
-    st.title('Formato Immagini Web Checker')
+    st.title('WebP Image Format Checker')
     url = st.text_input('Inserisci la URL della pagina web:')
     
     if url:
