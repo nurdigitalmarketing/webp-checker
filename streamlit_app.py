@@ -46,7 +46,7 @@ def app():
             for img in images_dict['webp']:
                 st.markdown(f"[{img}]({img})")
         else:
-            st.error("Attenzione: Non sono state trovate immagini WebP in questo sito.")
+            st.error("Non sono state trovate immagini WebP in questo URL.")
         
         if images_dict['jpeg']:
             st.info(f"**JPG/JPEG**: {len(images_dict['jpeg'])} che non utilizzano WebP.")
