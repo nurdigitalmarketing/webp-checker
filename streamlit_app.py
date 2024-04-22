@@ -1,7 +1,7 @@
 import streamlit as st
 import requests
 from bs4 import BeautifulSoup
-from urllib.parse import urljoin, urlparse  # Importa anche urlparse per analizzare gli URL
+from urllib.parse import urljoin, urlparse
 
 def fetch_images(url):
     """ Recupera le immagini dall'URL indicato e verifica i formati, restituendo un dizionario delle categorie con le rispettive immagini. """
@@ -45,6 +45,8 @@ def app():
             st.write("URL delle immagini WebP:")
             for img in images_dict['webp']:
                 st.markdown(f"[{img}]({img})")
+        else:
+            st.error("Attenzione: Non sono state trovate immagini WebP in questo sito.")
         
         if images_dict['jpeg']:
             st.info(f"**JPG/JPEG**: {len(images_dict['jpeg'])} che non utilizzano WebP.")
