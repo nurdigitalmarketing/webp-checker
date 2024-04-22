@@ -36,21 +36,19 @@ def app():
             st.success(f"WebP Images: {len(images_dict['webp'])} trovate.")
             st.write("URL delle immagini WebP:")
             for img in images_dict['webp']:
-                st.write(img)
-        else:
-            st.error("Non sono state trovate immagini WebP in questo sito.")
+                st.markdown(f"[{img}]({img})")
         
         if images_dict['jpeg']:
             st.info(f"JPG/JPEG Images: {len(images_dict['jpeg'])} che non utilizzano WebP.")
             st.write("URL delle immagini JPG/JPEG:")
             for img in images_dict['jpeg']:
-                st.write(img)
+                st.markdown(f"[{img}]({img})")
         
         if images_dict['png']:
             st.info(f"PNG Images: {len(images_dict['png'])} che non utilizzano WebP.")
             st.write("URL delle immagini PNG:")
             for img in images_dict['png']:
-                st.write(img)
+                st.markdown(f"[{img}]({img})")
 
 if __name__ == "__main__":
     app()
