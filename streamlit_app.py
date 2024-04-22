@@ -1,6 +1,7 @@
 import streamlit as st
 import requests
 from bs4 import BeautifulSoup
+from urllib.parse import urljoin  # Importa urljoin per normalizzare gli URL
 
 def fetch_images(url):
     """ Recupera le immagini dall'URL indicato e verifica i formati, restituendo un dizionario delle categorie con le rispettive immagini. """
@@ -16,12 +17,15 @@ def fetch_images(url):
     
     for img in images:
         src = img.get('src', '')
-        if src.endswith('.webp'):
-            images_dict['webp'].append(src)
-        elif src.endswith('.jpeg') or src.endswith('.jpg'):
-            images_dict['jpeg'].append(src)
-        elif src.endswith('.png'):
-            images_dict['png'].append(src)
+        # Normalizza l'URL unendo il dominio se l'URL dell'immagine è relativo
+        full_url = urljoin(url, src)
+        
+        if full_url.endswith('.webp'):
+            images_dict['webp'].append(full_url)
+        elif full_url.endswith('.jpeg') or full_url.endswith('.jpg'):
+            images_dict['jpeg'].append(full_url)
+        elif full_url.endswith('.png'):
+            images_dict['png'].append(full_url)
     
     return images_dict
 
