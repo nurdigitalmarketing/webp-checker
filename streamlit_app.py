@@ -2,6 +2,8 @@ import streamlit as st
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin, urlparse
+import csv
+import pandas as pd
 
 def fetch_images(url):
     """ Recupera le immagini dall'URL indicato e verifica i formati, restituendo un dizionario delle categorie con le rispettive immagini. """
@@ -22,7 +24,7 @@ def fetch_images(url):
     for img in images:
         src = img.get('src', '')
         # Normalizza l'URL unendo il dominio se l'URL dell'immagine è relativo
-        full_url = urljoin(base_url, src)  # Usa base_url che termina con slash
+        full_url = urljoin(base_url, src)
         
         if full_url.endswith('.webp'):
             images_dict['webp'].append(full_url)
@@ -33,6 +35,28 @@ def fetch_images(url):
     
     return images_dict
 
+def display_images(category, images):
+    """ Visualizza le prime 5 immagini e offre la possibilità di espandere per vedere tutte le immagini. """
+    if len(images) > 5:
+        expand = st.expander(f"Mostra tutte le {len(images)} immagini {category}")
+        with expand:
+            for img in images:
+                st.markdown(f"[{img}]({img})")
+    else:
+        for img in images:
+            st.markdown(f"[{img}]({img})")
+
+def export_to_csv(category, images):
+    """ Esporta la lista di immagini in formato CSV. """
+    if st.button(f"Esporta {category} come CSV"):
+        df = pd.DataFrame(images, columns=["URL"])
+        st.download_button(
+            label="Scarica CSV",
+            data=df.to_csv(index=False).encode('utf-8'),
+            file_name=f"{category}_images.csv",
+            mime='text/csv',
+        )
+
 def app():
     st.title('WebP Image Format Checker')
     url = st.text_input('Inserisci la URL della pagina web:')
@@ -40,25 +64,14 @@ def app():
     if url:
         images_dict = fetch_images(url)
         
-        if images_dict['webp']:
-            st.success(f"**WebP**: {len(images_dict['webp'])} trovate.")
-            st.write("URL delle immagini WebP:")
-            for img in images_dict['webp']:
-                st.markdown(f"[{img}]({img})")
-        else:
-            st.error("Non sono state trovate immagini WebP in questo URL.")
-        
-        if images_dict['jpeg']:
-            st.info(f"**JPG/JPEG**: {len(images_dict['jpeg'])} che non utilizzano WebP.")
-            st.write("URL delle immagini JPG/JPEG:")
-            for img in images_dict['jpeg']:
-                st.markdown(f"[{img}]({img})")
-        
-        if images_dict['png']:
-            st.info(f"**PNG**: {len(images_dict['png'])} che non utilizzano WebP.")
-            st.write("URL delle immagini PNG:")
-            for img in images_dict['png']:
-                st.markdown(f"[{img}]({img})")
+        for category in ['webp', 'jpeg', 'png']:
+            images = images_dict[category]
+            if images:
+                st.success(f"**{category.upper()}**: {len(images)} trovate.")
+                display_images(category, images)
+                export_to_csv(category, images)
+            else:
+                st.error(f"Non sono state trovate immagini {category.upper()} in questo URL.")
 
 if __name__ == "__main__":
     app()
